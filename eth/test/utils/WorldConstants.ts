@@ -107,6 +107,11 @@ const defaultInitializerValues = {
   ],
 };
 
+export const noZkDefaultInitializerValues = decodeInitializers({
+  ...defaultInitializerValues,
+  PLANET_RARITY: 1000,
+});
+
 // This builds a fake HRE-like object used to initialize the test contracts
 export const initializers = decodeInitializers(defaultInitializerValues);
 

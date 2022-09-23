@@ -7,12 +7,13 @@ import {DFVerifierFacet} from "../facets/DFVerifierFacet.sol";
 // Library imports
 import {LibGameUtils} from "./LibGameUtils.sol";
 import {LibLazyUpdate} from "./LibLazyUpdate.sol";
+import {Perlin} from "./LibPerlin.sol";
 
 // Storage imports
 import {LibStorage, GameStorage, GameConstants, SnarkConstants} from "./LibStorage.sol";
 
 // Type imports
-import {Artifact, ArtifactType, DFPInitPlanetArgs, Planet, PlanetEventMetadata, PlanetType, RevealedCoords, SpaceType, Upgrade, UpgradeBranch} from "../DFTypes.sol";
+import {Artifact, ArtifactType, DFPInitPlanetArgs, Planet, PlanetEventMetadata, PlanetType, RevealedCoords, SpaceType, Upgrade, CleanCoords, InputCoords, UpgradeBranch} from "../DFTypes.sol";
 
 library LibPlanet {
     function gs() internal pure returns (GameStorage storage) {
@@ -109,6 +110,28 @@ library LibPlanet {
 
         // Initialize planet information
         initializePlanetWithDefaults(_location, _perlin, isHomePlanet);
+    }
+
+    function cleanCoords(InputCoords memory coords) internal pure returns (CleanCoords memory) {
+        int32 OFFSET = 65535; // 2^16 - 1
+        uint32 x = uint32(coords.x < 0 ? coords.x + OFFSET : coords.x);
+        uint32 y = uint32(coords.y < 0 ? coords.y + OFFSET : coords.y);
+        return CleanCoords(x, y);
+    }
+
+    function noZkInitializePlanet(
+        int32 x,
+        int32 y,
+        bool _isHomePlanet
+    ) public {
+        // Sanitize coords here.
+        uint256 _location = uint256(keccak256(abi.encodePacked(x, y)));
+        uint32 seed = uint32(snarkConstants().SPACETYPE_KEY);
+        uint32 scale = uint32(snarkConstants().PERLIN_LENGTH_SCALE);
+        // We sanitize coords just to calculate perlin. Otherwise stored as is.
+        CleanCoords memory coords = cleanCoords(InputCoords(x, y));
+        uint256 _perlin = Perlin.computePerlin(coords.x, coords.y, seed, scale);
+        initializePlanetWithDefaults(_location, _perlin, _isHomePlanet);
     }
 
     function initializePlanetWithDefaults(

@@ -327,3 +327,15 @@ export async function createArtifactOnPlanet(
 
   return tokenId;
 }
+
+// If either coord is negative, returns its value offset by 2^32 -1,
+// which is the highest input value in LibPerlin.sol
+// TODO: Figure out edge cases where this fails.
+export function cleanCoords({ x, y }: { x: number; y: number }): { x: number; y: number } {
+  // uint32 2^16 is max coord size.
+  const OFFSET = 65535 - 1;
+  return {
+    x: x < 0 ? x + OFFSET : x,
+    y: y < 0 ? y + OFFSET : y,
+  };
+}

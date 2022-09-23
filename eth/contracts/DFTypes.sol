@@ -80,6 +80,17 @@ struct RevealedCoords {
     address revealer;
 }
 
+// Range from min: -2147483648 max: 2147483647;
+struct InputCoords {
+    int32 x;
+    int32 y;
+}
+// Range from 0 to 4294967296
+struct CleanCoords {
+    uint32 x;
+    uint32 y;
+}
+
 // For DFGetters
 struct PlanetData {
     Planet planet;

@@ -11,12 +11,13 @@ import {LibPermissions} from "../libraries/LibPermissions.sol";
 import {LibGameUtils} from "../libraries/LibGameUtils.sol";
 import {LibArtifactUtils} from "../libraries/LibArtifactUtils.sol";
 import {LibPlanet} from "../libraries/LibPlanet.sol";
+import {Perlin} from "../libraries/LibPerlin.sol";
 
 // Storage imports
 import {WithStorage} from "../libraries/LibStorage.sol";
 
 // Type imports
-import {SpaceType, Planet, Player, ArtifactType, DFPInitPlanetArgs, DFPMoveArgs, DFPFindArtifactArgs, AdminCreatePlanetArgs} from "../DFTypes.sol";
+import {SpaceType, Planet, Player, ArtifactType, DFPInitPlanetArgs, DFPMoveArgs, DFPFindArtifactArgs, CleanCoords, InputCoords, AdminCreatePlanetArgs} from "../DFTypes.sol";
 
 contract DFCoreFacet is WithStorage {
     using ABDKMath64x64 for *;
@@ -55,6 +56,15 @@ contract DFCoreFacet is WithStorage {
     //////////////////////
     /// Game Mechanics ///
     //////////////////////
+    function perlin(
+        int32 x,
+        int32 y,
+        uint32 seed,
+        uint32 scale
+    ) public pure returns (uint256) {
+        CleanCoords memory coords = LibPlanet.cleanCoords(InputCoords(x, y));
+        return Perlin.computePerlin(coords.x, coords.y, seed, scale);
+    }
 
     function refreshPlanet(uint256 location) public notPaused {
         LibPlanet.refreshPlanet(location);
@@ -113,6 +123,10 @@ contract DFCoreFacet is WithStorage {
             msg.sender != LibPermissions.contractOwner()
         );
         emit LocationRevealed(msg.sender, _input[0], _input[2], _input[3]);
+    }
+
+    function noZkInitializePlayer(int32 x, int32 y) public {
+        LibPlanet.noZkInitializePlanet(x, y, true);
     }
 
     function initializePlayer(
