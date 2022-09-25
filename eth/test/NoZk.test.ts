@@ -5,16 +5,16 @@ import { loadFixture } from '@nomicfoundation/hardhat-network-helpers';
 import { expect } from 'chai';
 import { cleanCoords } from './utils/TestUtils';
 
-import { defaultWorldFixture, World } from './utils/TestWorld';
+import { noZkWorldFixture, World } from './utils/TestWorld';
 import { noZkDefaultInitializerValues } from './utils/WorldConstants';
 
 //TODO: Add x,y mirror to Nalin's perlin
 
-describe('DarkForestInit', function () {
+describe('NoZk', function () {
   let world: World;
 
   beforeEach('load fixture', async function () {
-    world = await loadFixture(defaultWorldFixture);
+    world = await loadFixture(noZkWorldFixture);
   });
 
   it('gets correct perlin value with positive coords', async function () {

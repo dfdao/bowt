@@ -92,9 +92,7 @@ library Perlin {
 
         for (uint8 i = 0; i < 4; i++) {
             uint32[2] memory corner = corners[i];
-
             // this has an implicit denominator of scale
-
             int32[2] memory offset = [int32(x) - int32(corner[0]), int32(y) - int32(corner[1])];
 
             // this has an implicit denominator of vecsDenom

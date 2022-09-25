@@ -129,6 +129,8 @@ contract DFInitialize is WithStorage {
         snarkConstants().BIOMEBASE_KEY = initArgs.BIOMEBASE_KEY;
         snarkConstants().PERLIN_MIRROR_X = initArgs.PERLIN_MIRROR_X;
         snarkConstants().PERLIN_MIRROR_Y = initArgs.PERLIN_MIRROR_Y;
+
+        require(initArgs.PERLIN_LENGTH_SCALE <= 16384, "perlin scale too big");
         snarkConstants().PERLIN_LENGTH_SCALE = initArgs.PERLIN_LENGTH_SCALE;
 
         gameConstants().ADMIN_CAN_ADD_PLANETS = initArgs.ADMIN_CAN_ADD_PLANETS;

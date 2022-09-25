@@ -61,7 +61,7 @@ contract DFCoreFacet is WithStorage {
         int32 y,
         uint32 seed,
         uint32 scale
-    ) public pure returns (uint256) {
+    ) public view returns (uint256) {
         CleanCoords memory coords = LibPlanet.cleanCoords(InputCoords(x, y));
         return Perlin.computePerlin(coords.x, coords.y, seed, scale);
     }

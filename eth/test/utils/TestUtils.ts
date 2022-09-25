@@ -333,7 +333,7 @@ export async function createArtifactOnPlanet(
 // TODO: Figure out edge cases where this fails.
 export function cleanCoords({ x, y }: { x: number; y: number }): { x: number; y: number } {
   // uint32 2^16 is max coord size.
-  const OFFSET = 65535 - 1;
+  const OFFSET = 2147483647 - 131072;
   return {
     x: x < 0 ? x + OFFSET : x,
     y: y < 0 ? y + OFFSET : y,

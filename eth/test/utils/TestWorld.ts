@@ -4,7 +4,12 @@ import { BigNumber, utils } from 'ethers';
 import hre from 'hardhat';
 import type { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { deployAndCut, deployDiamondInit, deployLibraries } from '../../tasks/deploy';
-import { initializers, noPlanetTransferInitializers, target4Initializers } from './WorldConstants';
+import {
+  initializers,
+  noPlanetTransferInitializers,
+  noZkDefaultInitializerValues,
+  target4Initializers,
+} from './WorldConstants';
 
 export interface World {
   contract: DarkForest;
@@ -49,6 +54,13 @@ export async function createArena(
   const lobby = await hre.ethers.getContractAt('DarkForest', lobbyAddress);
 
   return lobby;
+}
+
+export function noZkWorldFixture(): Promise<World> {
+  return initializeWorld({
+    initializers: noZkDefaultInitializerValues,
+    whitelistEnabled: false,
+  });
 }
 
 export function defaultWorldFixture(): Promise<World> {

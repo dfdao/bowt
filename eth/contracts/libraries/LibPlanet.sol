@@ -113,9 +113,9 @@ library LibPlanet {
     }
 
     function cleanCoords(InputCoords memory coords) internal pure returns (CleanCoords memory) {
-        int32 OFFSET = 65535; // 2^16 - 1
-        uint32 x = uint32(coords.x < 0 ? coords.x + OFFSET : coords.x);
-        uint32 y = uint32(coords.y < 0 ? coords.y + OFFSET : coords.y);
+        int32 MAX = 2147483647 - 131072; // max int32 value minus (max perlin length scale value)^3
+        uint32 x = uint32(coords.x < 0 ? coords.x + MAX : coords.x);
+        uint32 y = uint32(coords.y < 0 ? coords.y + MAX : coords.y);
         return CleanCoords(x, y);
     }
 

@@ -17,7 +17,7 @@ SPACETYPE_KEY = 6280
 BIOMEBASE_KEY = 6271
 PERLIN_MIRROR_X = false
 PERLIN_MIRROR_Y = false
-PERLIN_LENGTH_SCALE = 16384 # must be a power of two no greater than 16384
+PERLIN_LENGTH_SCALE = 2 # must be a power of two no greater than 16384
 
 #############
 # Artifacts #
