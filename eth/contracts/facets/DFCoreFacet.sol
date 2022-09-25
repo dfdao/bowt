@@ -12,7 +12,7 @@ import {LibGameUtils} from "../libraries/LibGameUtils.sol";
 import {LibArtifactUtils} from "../libraries/LibArtifactUtils.sol";
 import {LibPlanet} from "../libraries/LibPlanet.sol";
 import {Perlin} from "../libraries/LibPerlin.sol";
-
+import "hardhat/console.sol";
 // Storage imports
 import {WithStorage} from "../libraries/LibStorage.sol";
 
@@ -125,8 +125,44 @@ contract DFCoreFacet is WithStorage {
         emit LocationRevealed(msg.sender, _input[0], _input[2], _input[3]);
     }
 
-    function noZkInitializePlayer(int32 x, int32 y) public {
-        LibPlanet.noZkInitializePlanet(x, y, true);
+    function noZkInitializePlayer(
+        int32 x,
+        int32 y,
+        uint256 locationId
+    ) public {
+        // If locationId exists, use that instead. just for testing.
+        uint256 _location = locationId != 0
+            ? locationId
+            : uint256(keccak256(abi.encodePacked(x, y)));
+
+        uint32 seed = uint32(snarkConstants().SPACETYPE_KEY);
+        uint32 scale = uint32(snarkConstants().PERLIN_LENGTH_SCALE);
+        // We sanitize coords just to calculate perlin. Otherwise stored as is.
+        CleanCoords memory coords = LibPlanet.cleanCoords(InputCoords(x, y));
+        uint256 _perlin = Perlin.computePerlin(coords.x, coords.y, seed, scale);
+        console.log("perlin %s", _perlin);
+        LibPlanet.noZkInitializePlanet(x, y, _location, _perlin, true);
+
+        require(LibPlanet.checkPlayerInit(_location, _perlin, gs().worldRadius));
+
+        // Initialize player data
+        gs().playerIds.push(msg.sender);
+        gs().players[msg.sender] = Player(
+            true,
+            msg.sender,
+            block.timestamp,
+            _location,
+            0,
+            0,
+            0,
+            gameConstants().SPACE_JUNK_LIMIT,
+            false,
+            0,
+            false
+        );
+
+        LibGameUtils.updateWorldRadius();
+        emit PlayerInitialized(msg.sender, _location);
     }
 
     function initializePlayer(

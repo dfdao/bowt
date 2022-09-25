@@ -122,15 +122,10 @@ library LibPlanet {
     function noZkInitializePlanet(
         int32 x,
         int32 y,
+        uint256 _location,
+        uint256 _perlin,
         bool _isHomePlanet
     ) public {
-        // Sanitize coords here.
-        uint256 _location = uint256(keccak256(abi.encodePacked(x, y)));
-        uint32 seed = uint32(snarkConstants().SPACETYPE_KEY);
-        uint32 scale = uint32(snarkConstants().PERLIN_LENGTH_SCALE);
-        // We sanitize coords just to calculate perlin. Otherwise stored as is.
-        CleanCoords memory coords = cleanCoords(InputCoords(x, y));
-        uint256 _perlin = Perlin.computePerlin(coords.x, coords.y, seed, scale);
         initializePlanetWithDefaults(_location, _perlin, _isHomePlanet);
     }
 

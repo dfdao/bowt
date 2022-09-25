@@ -6,7 +6,7 @@ import {DFArtifactFacet} from "../facets/DFArtifactFacet.sol";
 
 // Library imports
 import {ABDKMath64x64} from "../vendor/libraries/ABDKMath64x64.sol";
-
+import "hardhat/console.sol";
 // Storage imports
 import {LibStorage, GameStorage, GameConstants, SnarkConstants} from "./LibStorage.sol";
 
@@ -37,6 +37,12 @@ library LibGameUtils {
     }
 
     function _locationIdValid(uint256 _loc) public view returns (bool) {
+        console.log(
+            "loc %s planet %s",
+            _loc,
+            21888242871839275222246405745257275088548364400416034343698204186575808495617 /
+                gameConstants().PLANET_RARITY
+        );
         return (_loc <
             (21888242871839275222246405745257275088548364400416034343698204186575808495617 /
                 gameConstants().PLANET_RARITY));

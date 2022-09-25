@@ -111,6 +111,8 @@ export const noZkDefaultInitializerValues = decodeInitializers({
   ...defaultInitializerValues,
   PLANET_RARITY: 1000,
   PERLIN_LENGTH_SCALE: 2048,
+  INIT_PERLIN_MIN: 1,
+  INIT_PERLIN_MAX: 40,
 });
 
 // This builds a fake HRE-like object used to initialize the test contracts
