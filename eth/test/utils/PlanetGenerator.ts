@@ -12,7 +12,7 @@ import {
   SpaceTypeNames,
 } from '@dfdao/types';
 import bigInt from 'big-integer';
-import { defaultAbiCoder, keccak256 } from 'ethers/lib/utils';
+import { ethers } from 'hardhat';
 
 function spaceTypeFromPerlin(perlin: number, initializers: Initializers): SpaceType {
   if (perlin < initializers.PERLIN_THRESHOLD_1) {
@@ -94,8 +94,8 @@ export function getPerlinConfig(initializers: Initializers): PerlinConfig {
   return perlinConfig;
 }
 
-function calcPlanetData(x: number, y: number, initializers: Initializers) {
-  const location = keccak256(defaultAbiCoder.encode(['uint256', 'uint256'], [x, y]));
+export function calcPlanetData(x: number, y: number, initializers: Initializers) {
+  const location = ethers.utils.solidityKeccak256(['int32', 'int32'], [x, y]);
   // Ignore if hash is too high
   if (!bigInt(BigInt(location)).lesser(LOCATION_ID_UB_KECCACK.divide(initializers.PLANET_RARITY))) {
     // console.log(`hash of ${x},${y} too large`);
@@ -111,6 +111,7 @@ function calcPlanetData(x: number, y: number, initializers: Initializers) {
   console.log(
     `// Level ${level} ${PlanetTypeNames[type]} SpaceType: ${SpaceTypeNames[spaceType]} Perlin: ${planetPerlin}\n {x: ${x}, y: ${y}},`
   );
+  return { location, level, type, spaceType };
 }
 // Will generate rounds^2 potential planets
 export function generate(
@@ -124,7 +125,14 @@ export function generate(
   } else {
     for (let x = 0; x < rounds; x++) {
       for (let y = 0; y < rounds; y++) {
-        calcPlanetData(x + offset, y + offset, initializers);
+        const xOffset = x + offset;
+        const negXOffset = xOffset * -1;
+        const yOffset = y + offset;
+        const negYOffset = yOffset * -1;
+        calcPlanetData(xOffset, yOffset, initializers);
+        calcPlanetData(xOffset, negYOffset, initializers);
+        calcPlanetData(negXOffset, yOffset, initializers);
+        calcPlanetData(negXOffset, negYOffset, initializers);
       }
     }
   }

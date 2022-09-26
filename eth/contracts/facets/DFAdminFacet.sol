@@ -118,6 +118,8 @@ contract DFAdminFacet is WithStorage {
         SpaceType spaceType = LibGameUtils.spaceTypeFromPerlin(args.perlin);
         LibPlanet._initializePlanet(
             DFPInitPlanetArgs(
+                0,
+                0,
                 args.location,
                 args.perlin,
                 args.level,
@@ -155,7 +157,7 @@ contract DFAdminFacet is WithStorage {
     function adminInitializePlanet(uint256 locationId, uint256 perlin) public onlyAdmin {
         require(!gs().planets[locationId].isInitialized, "planet is already initialized");
 
-        LibPlanet.initializePlanetWithDefaults(locationId, perlin, false);
+        LibPlanet.initializePlanetWithDefaults(0, 0, locationId, perlin, false);
     }
 
     function setPlanetTransferEnabled(bool enabled) public onlyAdmin {

@@ -112,7 +112,7 @@ contract DFCoreFacet is WithStorage {
         require(checkRevealProof(_a, _b, _c, _input), "Failed reveal pf check");
 
         if (!gs().planets[_input[0]].isInitialized) {
-            LibPlanet.initializePlanetWithDefaults(_input[0], _input[1], false);
+            LibPlanet.initializePlanetWithDefaults(0, 0, _input[0], _input[1], false);
         }
 
         LibPlanet.revealLocation(
@@ -130,7 +130,7 @@ contract DFCoreFacet is WithStorage {
         int32 y,
         uint256 locationId
     ) public {
-        // If locationId exists, use that instead. just for testing.
+        // If locationId is not 0, use that instead. just for testing.
         uint256 _location = locationId != 0
             ? locationId
             : uint256(keccak256(abi.encodePacked(x, y)));

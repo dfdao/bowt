@@ -112,7 +112,7 @@ export const initializers = decodeInitializers(defaultInitializerValues);
 
 export const noZkInitializers = decodeInitializers({
   ...defaultInitializerValues,
-  PLANET_RARITY: 489,
+  PLANET_RARITY: 2,
   PERLIN_LENGTH_SCALE: 2048,
   INIT_PERLIN_MIN: 1,
   INIT_PERLIN_MAX: 40,

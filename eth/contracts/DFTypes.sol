@@ -71,6 +71,8 @@ struct Planet {
     uint256 invadeStartBlock;
     address capturer;
     uint256 locationId;
+    int32 x;
+    int32 y;
 }
 
 struct RevealedCoords {
@@ -120,6 +122,8 @@ enum ArrivalType {
 }
 
 struct DFPInitPlanetArgs {
+    int32 x;
+    int32 y;
     uint256 location;
     uint256 perlin;
     uint256 level;

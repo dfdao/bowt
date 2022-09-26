@@ -31,6 +31,9 @@ contract DFMoveFacet is WithStorage {
         uint256 abandoning
     );
 
+    // function noZkMove(
+
+    // )
     function move(
         uint256[2] memory _a,
         uint256[2][2] memory _b,
@@ -83,7 +86,7 @@ contract DFMoveFacet is WithStorage {
 
         // Only perform if the toPlanet have never initialized previously
         if (!gs().planets[args.newLoc].isInitialized) {
-            LibPlanet.initializePlanetWithDefaults(args.newLoc, newPerlin, false);
+            LibPlanet.initializePlanetWithDefaults(0, 0, args.newLoc, newPerlin, false);
         } else {
             // need to do this so people can't deny service to planets with gas limit
             LibPlanet.refreshPlanet(args.newLoc);

@@ -37,14 +37,9 @@ library LibGameUtils {
     }
 
     function _locationIdValid(uint256 _loc) public view returns (bool) {
-        console.log(
-            "loc %s planet %s",
-            _loc,
-            21888242871839275222246405745257275088548364400416034343698204186575808495617 /
-                gameConstants().PLANET_RARITY
-        );
+        // Different for max value of uint256
         return (_loc <
-            (21888242871839275222246405745257275088548364400416034343698204186575808495617 /
+            (115792089237316195423570985008687907853269984665640564039457584007913129639935 /
                 gameConstants().PLANET_RARITY));
     }
 

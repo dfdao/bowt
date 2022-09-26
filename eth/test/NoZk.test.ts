@@ -1,18 +1,18 @@
 import { IntegerVector } from '@dfdao/hashing';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { perlin, PerlinConfig } from '@dfdao/procgen-utils';
+import { perlin } from '@dfdao/procgen-utils';
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers';
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
 import coords from './utils/Coords';
-import { generate } from './utils/PlanetGenerator';
+import { calcPlanetData, generate, getPerlinConfig } from './utils/PlanetGenerator';
 import { cleanCoords } from './utils/TestUtils';
 import { noZkWorldFixture, World } from './utils/TestWorld';
-import { noZkInitializers, SPAWN_PLANET_1 } from './utils/WorldConstants';
+import { noZkInitializers } from './utils/WorldConstants';
 
 //TODO: Add x,y mirror to Nalin's perlin
-describe('NoZk', function () {
+describe.only('NoZk', function () {
   let world: World;
+  const inits = noZkInitializers;
 
   beforeEach('load fixture', async function () {
     world = await loadFixture(noZkWorldFixture);
@@ -21,29 +21,21 @@ describe('NoZk', function () {
   it('gets correct perlin value with positive coords', async function () {
     const x = 7000;
     const y = 29409; // Max value is ...
-    const inits = noZkInitializers;
-    const key = 100;
+    const key = inits.SPACETYPE_KEY;
     const scale = inits.PERLIN_LENGTH_SCALE;
     const contract = (await world.contract.perlin(x, y, key, scale)).toNumber();
     const coords: IntegerVector = {
       x,
       y,
     };
-    const perlinConfig: PerlinConfig = {
-      seed: key,
-      scale,
-      mirrorX: false,
-      mirrorY: false,
-      floor: true,
-    };
+    const perlinConfig = getPerlinConfig(inits);
     const client = perlin(coords, perlinConfig);
     expect(contract).to.equal(client);
   });
   it('gets correct perlin value with negative coords', async function () {
     const x = -7000;
     const y = -6000; // Max value is ...
-    const inits = noZkInitializers;
-    const key = 100;
+    const key = inits.SPACETYPE_KEY;
     const scale = inits.PERLIN_LENGTH_SCALE;
     const contract = (await world.contract.perlin(x, y, key, scale)).toNumber();
     // We clean the coords before submitting.
@@ -51,34 +43,30 @@ describe('NoZk', function () {
       x,
       y,
     });
-    const perlinConfig: PerlinConfig = {
-      seed: key,
-      scale,
-      mirrorX: false,
-      mirrorY: false,
-      floor: true,
-    };
+    const perlinConfig = getPerlinConfig(inits);
     const client = perlin(coords, perlinConfig);
     expect(contract).to.equal(client);
   });
-  it('calls init player and makes a new planet', async function () {
-    const x = -7000;
-    const y = -6000; // Max value is ...
-    // const inits = noZkDefaultInitializerValues;
-    // const key = 100;
-    const id = SPAWN_PLANET_1.id;
-    console.log('id gt max uint?', id.gt(ethers.constants.Two.pow(256)));
-    console.log('max uint gt id', ethers.constants.Two.pow(256).gt(id));
-    console.log(`id hex`, SPAWN_PLANET_1.id._hex);
-    const tx = await world.user1Core.noZkInitializePlayer(x, y, SPAWN_PLANET_1.id);
+  it.only('calls init player and makes a new planet', async function () {
+    const x = 530;
+    const y = 508; // Max value is 2^31 - 1
+    const { level, type, spaceType } = calcPlanetData(x, y, inits);
+    if (!level || !type || spaceType) return;
+    const tx = await world.user1Core.noZkInitializePlayer(x, y, 0);
     await tx.wait();
     const players = await world.user1Core.bulkGetPlayers(0, 1);
     expect(players[0].player).to.equal(world.user1.address);
-    const planets = await world.user1Core.bulkGetPlanetsDataByIds([SPAWN_PLANET_1.id]);
-    console.log(`planets`, planets[0]);
+    const numPlanets = (await world.user1Core.getNPlanets()).toNumber();
+    const planets = await world.user1Core.bulkGetPlanets(0, numPlanets);
+    const planet = planets[0];
+    expect(planet.owner).to.equal(world.user1.address);
+    expect(planet.x).to.equal(x);
+    expect(planet.y).to.equal(y);
+    expect(planet.planetLevel).to.equal(level);
+    expect(planet.planetType).to.equal(type);
+    expect(planet.spaceType).to.equal(spaceType);
   });
   it.skip('generates planets', async function () {
-    console.log(coords.length);
-    generate(200, 500, noZkInitializers);
+    generate(500, 0, noZkInitializers, coords);
   });
 });

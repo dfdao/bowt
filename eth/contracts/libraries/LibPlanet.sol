@@ -14,6 +14,7 @@ import {LibStorage, GameStorage, GameConstants, SnarkConstants} from "./LibStora
 
 // Type imports
 import {Artifact, ArtifactType, DFPInitPlanetArgs, Planet, PlanetEventMetadata, PlanetType, RevealedCoords, SpaceType, Upgrade, CleanCoords, InputCoords, UpgradeBranch} from "../DFTypes.sol";
+import "hardhat/console.sol";
 
 library LibPlanet {
     function gs() internal pure returns (GameStorage storage) {
@@ -73,6 +74,8 @@ library LibPlanet {
 
         return
             DFPInitPlanetArgs(
+                x,
+                y,
                 _location,
                 _perlin,
                 level,
@@ -108,8 +111,8 @@ library LibPlanet {
             false
         );
 
-        // Initialize planet information
-        initializePlanetWithDefaults(_location, _perlin, isHomePlanet);
+        // Initialize planet information. Placeholder for x and y.
+        initializePlanetWithDefaults(0, 0, _location, _perlin, isHomePlanet);
     }
 
     function cleanCoords(InputCoords memory coords) internal pure returns (CleanCoords memory) {
@@ -126,10 +129,12 @@ library LibPlanet {
         uint256 _perlin,
         bool _isHomePlanet
     ) public {
-        initializePlanetWithDefaults(_location, _perlin, _isHomePlanet);
+        initializePlanetWithDefaults(x, y, _location, _perlin, _isHomePlanet);
     }
 
     function initializePlanetWithDefaults(
+        int32 x,
+        int32 y,
         uint256 _location,
         uint256 _perlin,
         bool _isHomePlanet
@@ -137,6 +142,8 @@ library LibPlanet {
         require(LibGameUtils._locationIdValid(_location), "Not a valid planet location");
 
         DFPInitPlanetArgs memory initArgs = getDefaultInitPlanetArgs(
+            x,
+            y,
             _location,
             _perlin,
             _isHomePlanet
@@ -162,6 +169,8 @@ library LibPlanet {
             args.spaceType,
             args.TIME_FACTOR_HUNDREDTHS
         );
+        _planet.x = args.x;
+        _planet.y = args.y;
         _planet.locationId = args.location;
         _planet.owner = defaultPlanet.owner;
         _planet.isHomePlanet = defaultPlanet.isHomePlanet;
