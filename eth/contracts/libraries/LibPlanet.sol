@@ -8,6 +8,7 @@ import {DFVerifierFacet} from "../facets/DFVerifierFacet.sol";
 import {LibGameUtils} from "./LibGameUtils.sol";
 import {LibLazyUpdate} from "./LibLazyUpdate.sol";
 import {Perlin} from "./LibPerlin.sol";
+import {ABDKMath64x64} from "../vendor/libraries/ABDKMath64x64.sol";
 
 // Storage imports
 import {LibStorage, GameStorage, GameConstants, SnarkConstants} from "./LibStorage.sol";
@@ -33,6 +34,33 @@ library LibPlanet {
     event ArtifactActivated(address player, uint256 artifactId, uint256 loc);
     event ArtifactDeactivated(address player, uint256 artifactId, uint256 loc);
     event PlanetUpgraded(address player, uint256 loc, uint256 branch, uint256 toBranchLevel);
+
+    // Get id for any given planet coords.
+    function hashPlanet(int32 x, int32 y) public pure returns (uint256) {
+        return uint256(keccak256(abi.encodePacked(x, y)));
+    }
+
+    // Get planetDistance
+    function getPlanetDist(
+        int32 x1,
+        int32 y1,
+        int32 x2,
+        int32 y2
+    ) public view returns (uint256) {
+        int128 dX2 = ABDKMath64x64.fromUInt(uint32((x2 - x1)**2));
+        int128 dY2 = ABDKMath64x64.fromUInt(uint32((y2 - y1)**2));
+        uint256 dist = ABDKMath64x64.toUInt(ABDKMath64x64.sqrt(dX2 + dY2));
+        return dist;
+    }
+
+    // Get planetDistance
+    function getPlanetPerlin(int32 x, int32 y) public view returns (uint256) {
+        uint32 seed = uint32(snarkConstants().SPACETYPE_KEY);
+        uint32 scale = uint32(snarkConstants().PERLIN_LENGTH_SCALE);
+        // We sanitize coords just to calculate perlin. Otherwise stored as is.
+        CleanCoords memory coords = LibPlanet.cleanCoords(InputCoords(x, y));
+        return Perlin.computePerlin(coords.x, coords.y, seed, scale);
+    }
 
     function revealLocation(
         uint256 location,

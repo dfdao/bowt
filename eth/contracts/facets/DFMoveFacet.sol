@@ -31,9 +31,74 @@ contract DFMoveFacet is WithStorage {
         uint256 abandoning
     );
 
-    // function noZkMove(
+    function noZkMove(
+        int32 x1,
+        int32 y1,
+        int32 x2,
+        int32 y2,
+        uint256 popMoved,
+        uint256 silverMoved,
+        uint256 movedArtifactId,
+        uint256 isAbandoning
+    ) public returns (uint256) {
+        uint256 oldLoc = LibPlanet.hashPlanet(x1, y1);
+        uint256 newLoc = LibPlanet.hashPlanet(x2, y2);
 
-    // )
+        // Require that you can't move to a planet out of bounds.
+        uint256 newRadius = LibPlanet.getPlanetDist(0, 0, x2, y2);
+        require(newRadius <= gs().worldRadius, "attempting to move out of bounds");
+        uint256 maxDist = LibPlanet.getPlanetDist(x1, y1, x2, y2);
+
+        DFPMoveArgs memory args = DFPMoveArgs({
+            x1: x1,
+            y1: y1,
+            x2: x2,
+            y2: y2,
+            oldLoc: oldLoc,
+            newLoc: newLoc,
+            maxDist: maxDist,
+            popMoved: popMoved,
+            silverMoved: silverMoved,
+            movedArtifactId: movedArtifactId,
+            abandoning: isAbandoning,
+            sender: msg.sender
+        });
+
+        if (_isSpaceshipMove(args)) {
+            // If spaceships moves are not address(0)
+            // they can conquer planets with 0 energy
+            args.sender = address(0);
+        }
+
+        // Refresh fromPlanet first before doing any action on it
+        LibPlanet.refreshPlanet(args.oldLoc);
+
+        gs().planetEventsCount++;
+
+        // Only perform if the toPlanet have never initialized previously
+        if (!gs().planets[args.newLoc].isInitialized) {
+            uint256 newPerlin = LibPlanet.getPlanetPerlin(x2, y2);
+            LibPlanet.initializePlanetWithDefaults(x2, y2, args.newLoc, newPerlin, false);
+        } else {
+            // need to do this so people can't deny service to planets with gas limit
+            LibPlanet.refreshPlanet(args.newLoc);
+            LibGameUtils.checkPlanetDOS(args.newLoc, args.sender);
+        }
+
+        _executeMove(args);
+
+        LibGameUtils.updateWorldRadius();
+        emit ArrivalQueued(
+            msg.sender,
+            gs().planetEventsCount,
+            args.oldLoc,
+            args.newLoc,
+            args.movedArtifactId,
+            args.abandoning
+        );
+        return (gs().planetEventsCount);
+    }
+
     function move(
         uint256[2] memory _a,
         uint256[2][2] memory _b,
@@ -50,6 +115,10 @@ contract DFMoveFacet is WithStorage {
         );
 
         DFPMoveArgs memory args = DFPMoveArgs({
+            x1: 0,
+            y1: 0,
+            x2: 0,
+            y2: 0,
             oldLoc: _input[0],
             newLoc: _input[1],
             maxDist: _input[4],

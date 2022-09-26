@@ -66,6 +66,15 @@ contract DFCoreFacet is WithStorage {
         return Perlin.computePerlin(coords.x, coords.y, seed, scale);
     }
 
+    function getPlanetDist(
+        int32 x1,
+        int32 y1,
+        int32 x2,
+        int32 y2
+    ) public view returns (uint256) {
+        return LibPlanet.getPlanetDist(x1, y1, x2, y2);
+    }
+
     function refreshPlanet(uint256 location) public notPaused {
         LibPlanet.refreshPlanet(location);
     }

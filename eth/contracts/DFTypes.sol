@@ -142,6 +142,10 @@ struct DFPMoveArgs {
     uint256 movedArtifactId;
     uint256 abandoning;
     address sender;
+    int32 x1;
+    int32 y1;
+    int32 x2;
+    int32 y2;
 }
 
 struct DFPFindArtifactArgs {

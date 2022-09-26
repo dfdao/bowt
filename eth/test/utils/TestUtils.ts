@@ -155,6 +155,10 @@ export function makeMoveArgs(
   BigNumberish,
   BigNumberish,
   BigNumberish,
+  BigNumberish,
+  BigNumberish,
+  BigNumberish,
+  BigNumberish,
   BigNumberish
 ] {
   return [
@@ -180,6 +184,11 @@ export function makeMoveArgs(
     silverMoved,
     movedArtifactId,
     abandoning,
+    // x1, y1, x2, y2 placeholders
+    0,
+    0,
+    0,
+    0,
   ];
 }
 
@@ -338,4 +347,8 @@ export function cleanCoords({ x, y }: { x: number; y: number }): { x: number; y:
     x: x < 0 ? x + OFFSET : x,
     y: y < 0 ? y + OFFSET : y,
   };
+}
+
+export function calcDist(x1: number, y1: number, x2: number, y2: number) {
+  return Math.floor(Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2));
 }

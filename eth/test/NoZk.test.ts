@@ -10,7 +10,7 @@ import {
   generate,
   getPerlinConfig,
 } from './utils/PlanetGenerator';
-import { cleanCoords } from './utils/TestUtils';
+import { calcDist, cleanCoords } from './utils/TestUtils';
 import { noZkWorldFixture, World } from './utils/TestWorld';
 import { noZkInitializers, SPAWN_PLANET_1 } from './utils/WorldConstants';
 
@@ -103,8 +103,70 @@ describe.only('NoZk', function () {
     expect(planet.spaceType).to.equal(expectedPlanetData.spaceType);
     expect(planet.perlin).to.equal(expectedPlanetData.planetPerlin);
   });
-  it.only('generates planets', async function () {
+  it.skip('generates planets', async function () {
     const verbose = true;
-    generate(200, 500, inits, verbose);
+    generate(200, 0, inits, verbose);
+  });
+  it.skip('gets correct distance', async function () {
+    const coords = [
+      {
+        x1: 0,
+        y1: 0,
+        x2: 5,
+        y2: 5,
+      },
+      {
+        x1: 2,
+        y1: 2,
+        x2: -10,
+        y2: -10,
+      },
+      {
+        x1: 100,
+        y1: -2394,
+        x2: 3,
+        y2: -4932,
+      },
+    ];
+
+    coords.map(async (coord) => {
+      const contractDist = (
+        await world.contract.getPlanetDist(coord.x1, coord.y1, coord.x2, coord.y2)
+      ).toNumber();
+      const clientDist = calcDist(coord.x1, coord.y1, coord.x2, coord.y2);
+      expect(contractDist).to.equal(clientDist);
+    });
+  });
+  it.only('test move', async function () {
+    const x = 12;
+    const y = 71; // Max value is 2^31 - 1
+    const shipsSent = 50000;
+    const silverSent = 0;
+    const expectedPlanetData = calcPlanetData(x, y, inits);
+    if (!expectedPlanetData) {
+      throw new Error('data not found');
+    }
+    const toLoc = { x: -5, y: 168 };
+    const toLocExtendedData = calcPlanetData(toLoc.x, toLoc.y, inits);
+    // if (!toLocExtendedData) throw new Error('not found');
+    const tx = await world.user1Core.noZkInitializePlayer(x, y, 0);
+    await tx.wait();
+    const moveTx = await world.user1Core.noZkMove(
+      x,
+      y,
+      toLoc.x,
+      toLoc.y,
+      shipsSent,
+      silverSent,
+      0,
+      0
+    );
+    await moveTx.wait();
+    // const data = await world.user1Core.bulkGetPlanetsDataByIds([
+    //   '0x' + expectedPlanetData.location,
+    //   '0x' + toLocExtendedData.location,
+    // ]);
+    // console.log(`data`, data);
+    // Expect new planet to exist now
   });
 });

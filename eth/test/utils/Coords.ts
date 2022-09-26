@@ -21,4 +21,8 @@ export const noZkDefault = [
   { x: -667, y: -698 },
   // Level 0 Planet SpaceType: Dead Space Perlin: 31
   { x: -685, y: 503 },
+  // Level 0 Planet SpaceType: Dead Space Perlin: 32
+  { x: -5, y: 167 },
+  // Level 0 Planet SpaceType: Dead Space Perlin: 32
+  { x: 38, y: 106 },
 ];
