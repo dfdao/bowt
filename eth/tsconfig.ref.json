@@ -1,7 +1,12 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": ["test/**/*.ts"],
+  "exclude": [
+    "test/**/*.ts"
+  ],
   "references": [
+    {
+      "path": "../packages/constants/tsconfig.ref.json"
+    },
     {
       "path": "../packages/contracts/tsconfig.ref.json"
     },
@@ -10,6 +15,12 @@
     },
     {
       "path": "../packages/hashing/tsconfig.ref.json"
+    },
+    {
+      "path": "../packages/hexgen/tsconfig.ref.json"
+    },
+    {
+      "path": "../packages/serde/tsconfig.ref.json"
     },
     {
       "path": "../packages/settings/tsconfig.ref.json"

@@ -59,6 +59,16 @@ export const LOCATION_ID_UB: BigInteger = bigInt(
 );
 
 /**
+ * The upper-bounds of a LocationID.
+ *
+ * Represents the maximum possible value that the Keccack256 hash function (used for IDing locations in the universe) can output.
+ * A LocationID must be less than `LOCATION_ID_UB / PLANET_RARITY` in order to be considered a valid planet.
+ */
+export const LOCATION_ID_UB_KECCACK: BigInteger = bigInt(
+  '115792089237316195423570985008687907853269984665640564039457584007913129639935'
+);
+
+/**
  * The 0x0 Ethereum address, which is used for unowned planets, artifacts without an owner, etc.
  */
 export const EMPTY_ADDRESS = '0x0000000000000000000000000000000000000000' as EthAddress;

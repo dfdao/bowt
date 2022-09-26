@@ -107,16 +107,19 @@ const defaultInitializerValues = {
   ],
 };
 
-export const noZkDefaultInitializerValues = decodeInitializers({
+// This builds a fake HRE-like object used to initialize the test contracts
+export const initializers = decodeInitializers(defaultInitializerValues);
+
+export const noZkInitializers = decodeInitializers({
   ...defaultInitializerValues,
-  PLANET_RARITY: 1000,
+  PLANET_RARITY: 489,
   PERLIN_LENGTH_SCALE: 2048,
   INIT_PERLIN_MIN: 1,
   INIT_PERLIN_MAX: 40,
+  PLANET_LEVEL_THRESHOLDS: [
+    16777216, 8388608, 4194304, 2097152, 1048576, 524288, 262144, 131072, 65536, 32768,
+  ],
 });
-
-// This builds a fake HRE-like object used to initialize the test contracts
-export const initializers = decodeInitializers(defaultInitializerValues);
 
 // This builds a fake HRE-like object used to initialize the test contracts
 export const noPlanetTransferInitializers = decodeInitializers({

@@ -6,9 +6,13 @@
   "author": "0xPARC <ivan@0xPARC.org>",
   "main": "index.js",
   "devDependencies": {
+    "@dfdao/constants": "100.0.0-dev.0",
     "@dfdao/contracts": "100.0.0-dev.0",
     "@dfdao/whitelist": "100.0.0-dev.0",
     "@dfdao/hashing": "100.0.0-dev.0",
+    "@dfdao/hexgen": "100.0.0-dev.0",
+    "@dfdao/procgen-utils": "100.0.0-dev.0",
+    "@dfdao/serde": "100.0.0-dev.0",
     "@dfdao/settings": "100.0.0-dev.0",
     "@dfdao/snarks": "100.0.0-dev.0",
     "@dfdao/types": "100.0.0-dev.0",

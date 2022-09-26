@@ -140,7 +140,7 @@ contract DFCoreFacet is WithStorage {
         // We sanitize coords just to calculate perlin. Otherwise stored as is.
         CleanCoords memory coords = LibPlanet.cleanCoords(InputCoords(x, y));
         uint256 _perlin = Perlin.computePerlin(coords.x, coords.y, seed, scale);
-        console.log("perlin %s", _perlin);
+
         LibPlanet.noZkInitializePlanet(x, y, _location, _perlin, true);
 
         require(LibPlanet.checkPlayerInit(_location, _perlin, gs().worldRadius));

@@ -4,13 +4,13 @@ import { perlin, PerlinConfig } from '@dfdao/procgen-utils';
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
+import coords from './utils/Coords';
+import { generate } from './utils/PlanetGenerator';
 import { cleanCoords } from './utils/TestUtils';
-
 import { noZkWorldFixture, World } from './utils/TestWorld';
-import { noZkDefaultInitializerValues, SPAWN_PLANET_1 } from './utils/WorldConstants';
+import { noZkInitializers, SPAWN_PLANET_1 } from './utils/WorldConstants';
 
 //TODO: Add x,y mirror to Nalin's perlin
-
 describe('NoZk', function () {
   let world: World;
 
@@ -21,7 +21,7 @@ describe('NoZk', function () {
   it('gets correct perlin value with positive coords', async function () {
     const x = 7000;
     const y = 29409; // Max value is ...
-    const inits = noZkDefaultInitializerValues;
+    const inits = noZkInitializers;
     const key = 100;
     const scale = inits.PERLIN_LENGTH_SCALE;
     const contract = (await world.contract.perlin(x, y, key, scale)).toNumber();
@@ -37,13 +37,12 @@ describe('NoZk', function () {
       floor: true,
     };
     const client = perlin(coords, perlinConfig);
-    console.log(contract, client);
     expect(contract).to.equal(client);
   });
   it('gets correct perlin value with negative coords', async function () {
     const x = -7000;
     const y = -6000; // Max value is ...
-    const inits = noZkDefaultInitializerValues;
+    const inits = noZkInitializers;
     const key = 100;
     const scale = inits.PERLIN_LENGTH_SCALE;
     const contract = (await world.contract.perlin(x, y, key, scale)).toNumber();
@@ -75,5 +74,11 @@ describe('NoZk', function () {
     await tx.wait();
     const players = await world.user1Core.bulkGetPlayers(0, 1);
     expect(players[0].player).to.equal(world.user1.address);
+    const planets = await world.user1Core.bulkGetPlanetsDataByIds([SPAWN_PLANET_1.id]);
+    console.log(`planets`, planets[0]);
+  });
+  it.skip('generates planets', async function () {
+    console.log(coords.length);
+    generate(200, 500, noZkInitializers);
   });
 });

@@ -1,6 +1,6 @@
 {
   "name": "@dfdao/procgen-utils",
-  "version": "1.0.0",
+  "version": "100.0.0-dev.0",
   "main": "dist/index.js",
   "files": [
     "dist/",

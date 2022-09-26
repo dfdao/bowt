@@ -7,7 +7,7 @@ import { deployAndCut, deployDiamondInit, deployLibraries } from '../../tasks/de
 import {
   initializers,
   noPlanetTransferInitializers,
-  noZkDefaultInitializerValues,
+  noZkInitializers,
   target4Initializers,
 } from './WorldConstants';
 
@@ -58,7 +58,7 @@ export async function createArena(
 
 export function noZkWorldFixture(): Promise<World> {
   return initializeWorld({
-    initializers: noZkDefaultInitializerValues,
+    initializers: noZkInitializers,
     whitelistEnabled: false,
   });
 }

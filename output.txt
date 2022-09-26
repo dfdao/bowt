@@ -1,0 +1,200 @@
+Compiled 2 Solidity files successfully
+
+
+  NoZk
+Diamond deployed to: 0xa01f5F1cF64F89a7ed27C51Fd459C974c33d1650
+DFInitialize deployed to: 0x85919f1Af99Feb881eF9f147beC4E64c673b97Eb
+DFCoreFacet deployed to: 0x5cCb1be191b1602c176eDe23D5f0A67Fc68151f6
+DFMoveFacet deployed to: 0x884e9AF7c4bc2B12B8e0Cc5538926986ccf4E670
+DFCaptureFacet deployed to: 0x7Df56e3DCe643CC13cD155B668212b6F898e0415
+DFArtifactFacet deployed to: 0xF6816ceAdef38C0D4d11498dfDC3aeEcA51B14fB
+DFGetterFacet deployed to: 0x11034651c79De1f899984d2F754AA94ae3E72b97
+DFWhitelistFacet deployed to: 0x921a88Ae2628a48C78690ffdFd7d840d964D3e99
+DFVerifierFacet deployed to: 0x423e81E5f4a0d4F3fA03f5E660e63615375017E0
+DFAdminFacet deployed to: 0x270b7007B2d2075460ba366A857C7BEE553c3C68
+DFLobbyFacet deployed to: 0xCFc7a0130C8F1e754eb9d41ACA6b97fF3Dc20890
+DFRewardFacet deployed to: 0x19D2657BBCcD024027251f4288aF7eE80281dA49
+DFDebugFacet deployed to: 0x942cBa5081416e2A3389c5338722ccc6912B9115
+Completed diamond cut
+15
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 501, y: 575},
+// Level 1 Planet SpaceType: Dead Space Perlin: 24
+ {x: 504, y: 594},
+// Level 2 Planet SpaceType: Dead Space Perlin: 24
+ {x: 507, y: 648},
+// Level 1 Planet SpaceType: Dead Space Perlin: 24
+ {x: 509, y: 633},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 510, y: 543},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 511, y: 605},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 515, y: 542},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 520, y: 624},
+// Level 7 Planet SpaceType: Dead Space Perlin: 24
+ {x: 521, y: 588},
+// Level 1 Planet SpaceType: Dead Space Perlin: 24
+ {x: 522, y: 662},
+// Level 1 Planet SpaceType: Dead Space Perlin: 24
+ {x: 525, y: 535},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 525, y: 644},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 526, y: 562},
+// Level 3 Asteroid Field SpaceType: Dead Space Perlin: 24
+ {x: 528, y: 644},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 530, y: 508},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 531, y: 533},
+// Level 1 Asteroid Field SpaceType: Dead Space Perlin: 24
+ {x: 535, y: 601},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 538, y: 599},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 541, y: 626},
+// Level 1 Planet SpaceType: Dead Space Perlin: 24
+ {x: 542, y: 544},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 542, y: 572},
+// Level 2 Planet SpaceType: Dead Space Perlin: 24
+ {x: 543, y: 693},
+// Level 1 Planet SpaceType: Dead Space Perlin: 24
+ {x: 544, y: 690},
+// Level 2 Planet SpaceType: Dead Space Perlin: 24
+ {x: 548, y: 543},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 549, y: 623},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 553, y: 579},
+// Level 1 Foundry SpaceType: Dead Space Perlin: 24
+ {x: 554, y: 660},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 555, y: 694},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 556, y: 535},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 569, y: 622},
+// Level 4 Planet SpaceType: Dead Space Perlin: 24
+ {x: 570, y: 656},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 576, y: 520},
+// Level 6 Asteroid Field SpaceType: Dead Space Perlin: 24
+ {x: 577, y: 578},
+// Level 1 Planet SpaceType: Dead Space Perlin: 24
+ {x: 579, y: 591},
+// Level 1 Asteroid Field SpaceType: Dead Space Perlin: 24
+ {x: 590, y: 663},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 591, y: 559},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 591, y: 644},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 596, y: 583},
+// Level 1 Planet SpaceType: Dead Space Perlin: 24
+ {x: 597, y: 635},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 598, y: 539},
+// Level 1 Planet SpaceType: Dead Space Perlin: 24
+ {x: 599, y: 536},
+// Level 1 Planet SpaceType: Dead Space Perlin: 23
+ {x: 599, y: 659},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 603, y: 529},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 606, y: 594},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 607, y: 554},
+// Level 1 Planet SpaceType: Dead Space Perlin: 24
+ {x: 608, y: 508},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 609, y: 533},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 611, y: 528},
+// Level 2 Planet SpaceType: Dead Space Perlin: 23
+ {x: 611, y: 639},
+// Level 1 Planet SpaceType: Dead Space Perlin: 24
+ {x: 613, y: 538},
+// Level 0 Planet SpaceType: Dead Space Perlin: 23
+ {x: 619, y: 694},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 623, y: 515},
+// Level 3 Asteroid Field SpaceType: Dead Space Perlin: 23
+ {x: 623, y: 661},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 625, y: 560},
+// Level 7 Spacetime Rip SpaceType: Dead Space Perlin: 24
+ {x: 626, y: 543},
+// Level 1 Planet SpaceType: Dead Space Perlin: 23
+ {x: 626, y: 673},
+// Level 0 Planet SpaceType: Dead Space Perlin: 23
+ {x: 627, y: 573},
+// Level 2 Planet SpaceType: Dead Space Perlin: 23
+ {x: 627, y: 669},
+// Level 0 Planet SpaceType: Dead Space Perlin: 23
+ {x: 630, y: 657},
+// Level 1 Planet SpaceType: Dead Space Perlin: 23
+ {x: 633, y: 548},
+// Level 2 Foundry SpaceType: Dead Space Perlin: 23
+ {x: 635, y: 548},
+// Level 0 Planet SpaceType: Dead Space Perlin: 24
+ {x: 636, y: 504},
+// Level 2 Planet SpaceType: Dead Space Perlin: 23
+ {x: 637, y: 621},
+// Level 1 Asteroid Field SpaceType: Dead Space Perlin: 23
+ {x: 639, y: 627},
+// Level 3 Asteroid Field SpaceType: Dead Space Perlin: 23
+ {x: 642, y: 613},
+// Level 1 Asteroid Field SpaceType: Dead Space Perlin: 23
+ {x: 642, y: 648},
+// Level 1 Planet SpaceType: Dead Space Perlin: 23
+ {x: 645, y: 543},
+// Level 0 Planet SpaceType: Dead Space Perlin: 23
+ {x: 650, y: 673},
+// Level 4 Planet SpaceType: Dead Space Perlin: 23
+ {x: 654, y: 614},
+// Level 0 Planet SpaceType: Dead Space Perlin: 23
+ {x: 656, y: 547},
+// Level 0 Planet SpaceType: Dead Space Perlin: 23
+ {x: 656, y: 670},
+// Level 2 Asteroid Field SpaceType: Dead Space Perlin: 23
+ {x: 660, y: 696},
+// Level 1 Planet SpaceType: Dead Space Perlin: 23
+ {x: 662, y: 536},
+// Level 0 Planet SpaceType: Dead Space Perlin: 23
+ {x: 662, y: 568},
+// Level 0 Planet SpaceType: Dead Space Perlin: 23
+ {x: 664, y: 622},
+// Level 0 Planet SpaceType: Dead Space Perlin: 23
+ {x: 671, y: 630},
+// Level 0 Planet SpaceType: Dead Space Perlin: 23
+ {x: 673, y: 586},
+// Level 0 Planet SpaceType: Dead Space Perlin: 23
+ {x: 674, y: 697},
+// Level 1 Foundry SpaceType: Dead Space Perlin: 23
+ {x: 675, y: 525},
+// Level 2 Planet SpaceType: Dead Space Perlin: 23
+ {x: 677, y: 671},
+// Level 6 Spacetime Rip SpaceType: Dead Space Perlin: 23
+ {x: 681, y: 512},
+// Level 1 Asteroid Field SpaceType: Dead Space Perlin: 23
+ {x: 681, y: 598},
+// Level 1 Planet SpaceType: Dead Space Perlin: 23
+ {x: 682, y: 525},
+// Level 1 Planet SpaceType: Dead Space Perlin: 23
+ {x: 683, y: 552},
+// Level 1 Planet SpaceType: Dead Space Perlin: 23
+ {x: 685, y: 686},
+// Level 0 Planet SpaceType: Dead Space Perlin: 23
+ {x: 690, y: 638},
+// Level 1 Planet SpaceType: Dead Space Perlin: 23
+ {x: 693, y: 614},
+// Level 2 Planet SpaceType: Dead Space Perlin: 23
+ {x: 699, y: 638},
+    ✔ generates planets (995ms)
+
+
+  1 passing (3s)
+
