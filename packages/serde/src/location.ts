@@ -47,6 +47,14 @@ export function locationIdFromDecStr(location: string) {
   return ret as LocationId;
 }
 
+export function locationIdFromDecStrKeccack(location: string) {
+  const locationBI = bigInt(location);
+  if (locationBI.geq(LOCATION_ID_UB_KECCACK)) throw new Error('not a valid location');
+  let ret = locationBI.toString(16);
+  while (ret.length < 64) ret = '0' + ret;
+  return ret as LocationId;
+}
+
 /**
  * Converts a BigInteger representation of location ID into a LocationID: a
  * non-0x-prefixed all lowercase hex string of exactly 64 hex characters
@@ -75,6 +83,10 @@ export function locationIdFromBigInt(location: BigInteger): LocationId {
  */
 export function locationIdFromEthersBN(location: EthersBN): LocationId {
   return locationIdFromDecStr(location.toString());
+}
+
+export function locationIdFromEthersBNKeccack(location: EthersBN): LocationId {
+  return locationIdFromDecStrKeccack(location.toString());
 }
 
 /**

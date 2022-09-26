@@ -94,6 +94,17 @@ export function getPerlinConfig(initializers: Initializers): PerlinConfig {
   return perlinConfig;
 }
 
+export function calcPlanetDataFromId(
+  locId: LocationId,
+  planetPerlin: number,
+  initializers: Initializers
+) {
+  // Weird that locationIdFromHexStr can't handle 0x
+  const level = planetLevelFromHexPerlin(locId, planetPerlin, initializers);
+  const type = planetTypeFromHexPerlin(locId, planetPerlin, initializers);
+  const spaceType = spaceTypeFromPerlin(planetPerlin, initializers);
+  return { location: locId, level, type, spaceType, planetPerlin };
+}
 export function calcPlanetData(x: number, y: number, initializers: Initializers, verbose = false) {
   const location = ethers.utils.solidityKeccak256(['int32', 'int32'], [x, y]);
 
@@ -106,15 +117,16 @@ export function calcPlanetData(x: number, y: number, initializers: Initializers,
 
   const planetPerlin = perlin({ x, y }, getPerlinConfig(initializers));
   const locId = locationIdFromHexStrKeccack(location.slice(2));
-  // Weird that locationIdFromHexStr can't handle 0x
-  const level = planetLevelFromHexPerlin(locId, planetPerlin, initializers);
-  const type = planetTypeFromHexPerlin(locId, planetPerlin, initializers);
-  const spaceType = spaceTypeFromPerlin(planetPerlin, initializers);
+
+  const data = calcPlanetDataFromId(locId, planetPerlin, initializers);
+
   if (verbose)
     console.log(
-      `// Level ${level} ${PlanetTypeNames[type]} SpaceType: ${SpaceTypeNames[spaceType]} Perlin: ${planetPerlin}\n {x: ${x}, y: ${y}},`
+      `// Level ${data.level} ${PlanetTypeNames[data.type]} SpaceType: ${
+        SpaceTypeNames[data.spaceType]
+      } Perlin: ${data.planetPerlin}\n {x: ${x}, y: ${y}},`
     );
-  return { location, level, type, spaceType, planetPerlin };
+  return data;
 }
 // Will generate rounds^2 potential planets
 export function generate(
