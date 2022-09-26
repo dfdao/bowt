@@ -3,11 +3,10 @@ import { IntegerVector } from '@dfdao/hashing';
 import { perlin } from '@dfdao/procgen-utils';
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers';
 import { expect } from 'chai';
-import coords from './utils/Coords';
 import { calcPlanetData, generate, getPerlinConfig } from './utils/PlanetGenerator';
 import { cleanCoords } from './utils/TestUtils';
 import { noZkWorldFixture, World } from './utils/TestWorld';
-import { noZkInitializers } from './utils/WorldConstants';
+import { noZkInitializers, SPAWN_PLANET_1 } from './utils/WorldConstants';
 
 //TODO: Add x,y mirror to Nalin's perlin
 describe.only('NoZk', function () {
@@ -47,11 +46,36 @@ describe.only('NoZk', function () {
     const client = perlin(coords, perlinConfig);
     expect(contract).to.equal(client);
   });
-  it.only('calls init player and makes a new planet', async function () {
-    const x = 530;
-    const y = 508; // Max value is 2^31 - 1
-    const { level, type, spaceType } = calcPlanetData(x, y, inits);
-    if (!level || !type || spaceType) return;
+  it.only('calls init player and makes a new planet with synthetic location', async function () {
+    const x = 12;
+    const y = 71; // Max value is 2^31 - 1
+    const expectedPlanetData = calcPlanetData(x, y, inits);
+    if (!expectedPlanetData) {
+      throw new Error('data not found');
+    }
+    const tx = await world.user1Core.noZkInitializePlayer(x, y, SPAWN_PLANET_1.id);
+    await tx.wait();
+    const players = await world.user1Core.bulkGetPlayers(0, 1);
+    expect(players[0].player).to.equal(world.user1.address);
+    const numPlanets = (await world.user1Core.getNPlanets()).toNumber();
+    const planets = await world.user1Core.bulkGetPlanets(0, numPlanets);
+    const planet = planets[0];
+    expect(planet.owner).to.equal(world.user1.address);
+    expect(planet.x).to.equal(x);
+    expect(planet.y).to.equal(y);
+    expect(planet.planetLevel).to.equal(expectedPlanetData.level);
+    expect(planet.planetType).to.equal(expectedPlanetData.type);
+    expect(planet.spaceType).to.equal(expectedPlanetData.spaceType);
+    expect(planet.perlin).to.equal(expectedPlanetData.planetPerlin);
+  });
+  it.only('calls init player and makes a new planet with real location', async function () {
+    const x = 12;
+    const y = 71; // Max value is 2^31 - 1
+    const expectedPlanetData = calcPlanetData(x, y, inits);
+    console.log(expectedPlanetData);
+    if (!expectedPlanetData) {
+      throw new Error('data not found');
+    }
     const tx = await world.user1Core.noZkInitializePlayer(x, y, 0);
     await tx.wait();
     const players = await world.user1Core.bulkGetPlayers(0, 1);
@@ -62,11 +86,13 @@ describe.only('NoZk', function () {
     expect(planet.owner).to.equal(world.user1.address);
     expect(planet.x).to.equal(x);
     expect(planet.y).to.equal(y);
-    expect(planet.planetLevel).to.equal(level);
-    expect(planet.planetType).to.equal(type);
-    expect(planet.spaceType).to.equal(spaceType);
+    expect(planet.planetLevel).to.equal(expectedPlanetData.level);
+    expect(planet.planetType).to.equal(expectedPlanetData.type);
+    expect(planet.spaceType).to.equal(expectedPlanetData.spaceType);
+    expect(planet.perlin).to.equal(expectedPlanetData.planetPerlin);
   });
   it.skip('generates planets', async function () {
-    generate(500, 0, noZkInitializers, coords);
+    const verbose = false;
+    generate(100, 0, inits, verbose);
   });
 });

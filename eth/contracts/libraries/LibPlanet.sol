@@ -60,6 +60,8 @@ library LibPlanet {
     }
 
     function getDefaultInitPlanetArgs(
+        int32 x,
+        int32 y,
         uint256 _location,
         uint256 _perlin,
         bool _isHomePlanet

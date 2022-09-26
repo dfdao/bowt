@@ -1,7 +1,7 @@
 import { LOCATION_ID_UB_KECCACK, MAX_PLANET_LEVEL, MIN_PLANET_LEVEL } from '@dfdao/constants';
 import { getBytesFromHex } from '@dfdao/hexgen';
 import { perlin, PerlinConfig } from '@dfdao/procgen-utils';
-import { locationIdFromHexStr } from '@dfdao/serde';
+import { locationIdFromHexStrKeccack } from '@dfdao/serde';
 import { Initializers } from '@dfdao/settings';
 import {
   LocationId,
@@ -94,45 +94,50 @@ export function getPerlinConfig(initializers: Initializers): PerlinConfig {
   return perlinConfig;
 }
 
-export function calcPlanetData(x: number, y: number, initializers: Initializers) {
+export function calcPlanetData(x: number, y: number, initializers: Initializers, verbose = false) {
   const location = ethers.utils.solidityKeccak256(['int32', 'int32'], [x, y]);
+
   // Ignore if hash is too high
-  if (!bigInt(BigInt(location)).lesser(LOCATION_ID_UB_KECCACK.divide(initializers.PLANET_RARITY))) {
-    // console.log(`hash of ${x},${y} too large`);
+  const threshold = LOCATION_ID_UB_KECCACK.divide(initializers.PLANET_RARITY);
+  if (!bigInt(BigInt(location)).lesser(threshold)) {
+    if (verbose) console.log(`hash of ${x},${y} too large > ${threshold}`);
     return;
   }
 
   const planetPerlin = perlin({ x, y }, getPerlinConfig(initializers));
-  const locId = locationIdFromHexStr(location.slice(2));
+  const locId = locationIdFromHexStrKeccack(location.slice(2));
   // Weird that locationIdFromHexStr can't handle 0x
   const level = planetLevelFromHexPerlin(locId, planetPerlin, initializers);
   const type = planetTypeFromHexPerlin(locId, planetPerlin, initializers);
   const spaceType = spaceTypeFromPerlin(planetPerlin, initializers);
-  console.log(
-    `// Level ${level} ${PlanetTypeNames[type]} SpaceType: ${SpaceTypeNames[spaceType]} Perlin: ${planetPerlin}\n {x: ${x}, y: ${y}},`
-  );
-  return { location, level, type, spaceType };
+  if (verbose)
+    console.log(
+      `// Level ${level} ${PlanetTypeNames[type]} SpaceType: ${SpaceTypeNames[spaceType]} Perlin: ${planetPerlin}\n {x: ${x}, y: ${y}},`
+    );
+  return { location, level, type, spaceType, planetPerlin };
 }
 // Will generate rounds^2 potential planets
 export function generate(
   rounds: number,
   offset = 0,
   initializers: Initializers,
+  verbose = false,
   coords?: { x: number; y: number }[]
 ) {
   if (coords && coords.length > 0) {
-    coords.map((coord) => calcPlanetData(coord.x, coord.y, initializers));
+    coords.map((coord) => calcPlanetData(coord.x, coord.y, initializers, verbose));
   } else {
     for (let x = 0; x < rounds; x++) {
       for (let y = 0; y < rounds; y++) {
         const xOffset = x + offset;
-        const negXOffset = xOffset * -1;
+        const negXOffset = xOffset === 0 ? 0 : xOffset * -1;
         const yOffset = y + offset;
-        const negYOffset = yOffset * -1;
-        calcPlanetData(xOffset, yOffset, initializers);
-        calcPlanetData(xOffset, negYOffset, initializers);
-        calcPlanetData(negXOffset, yOffset, initializers);
-        calcPlanetData(negXOffset, negYOffset, initializers);
+        const negYOffset = yOffset === 0 ? 0 : yOffset * -1;
+        if (verbose) console.log(`coords`, xOffset, negXOffset, yOffset, negYOffset);
+        calcPlanetData(xOffset, yOffset, initializers, verbose);
+        calcPlanetData(xOffset, negYOffset, initializers, verbose);
+        calcPlanetData(negXOffset, yOffset, initializers, verbose);
+        calcPlanetData(negXOffset, negYOffset, initializers, verbose);
       }
     }
   }

@@ -1,6 +1,6 @@
 import BigInt, { BigInteger } from 'big-integer';
-import { Fraction } from './fractions/bigFraction.js';
 import { soliditySha3, toBN } from 'web3-utils';
+import { Fraction } from './fractions/bigFraction.js';
 
 const TRACK_LCM = false;
 
@@ -61,8 +61,8 @@ type HashFn = (...inputs: number[]) => number;
 export const rand = (seed: number) => (x: number, y: number, scale: number) => {
   return toBN(
     soliditySha3(
-      { t: 'uint32', v: x },
-      { t: 'uint32', v: y },
+      { t: 'int32', v: x },
+      { t: 'int32', v: y },
       { t: 'uint32', v: scale },
       { t: 'uint32', v: seed }
     )!

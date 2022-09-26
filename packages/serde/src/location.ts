@@ -1,4 +1,4 @@
-import { LOCATION_ID_UB } from '@dfdao/constants';
+import { LOCATION_ID_UB, LOCATION_ID_UB_KECCACK } from '@dfdao/constants';
 import type { LocationId } from '@dfdao/types';
 import bigInt, { BigInteger } from 'big-integer';
 import type { BigNumber as EthersBN } from 'ethers';
@@ -16,6 +16,14 @@ import type { BigNumber as EthersBN } from 'ethers';
 export function locationIdFromHexStr(location: string) {
   const locationBI = bigInt(location, 16);
   if (locationBI.geq(LOCATION_ID_UB)) throw new Error('not a valid location');
+  let ret = locationBI.toString(16);
+  while (ret.length < 64) ret = '0' + ret;
+  return ret as LocationId;
+}
+
+export function locationIdFromHexStrKeccack(location: string) {
+  const locationBI = bigInt(location, 16);
+  if (locationBI.geq(LOCATION_ID_UB_KECCACK)) throw new Error('not a valid location');
   let ret = locationBI.toString(16);
   while (ret.length < 64) ret = '0' + ret;
   return ret as LocationId;

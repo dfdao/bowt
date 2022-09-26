@@ -134,6 +134,7 @@ contract DFCoreFacet is WithStorage {
         uint256 _location = locationId != 0
             ? locationId
             : uint256(keccak256(abi.encodePacked(x, y)));
+        console.log("final loc %s", _location);
 
         uint32 seed = uint32(snarkConstants().SPACETYPE_KEY);
         uint32 scale = uint32(snarkConstants().PERLIN_LENGTH_SCALE);
